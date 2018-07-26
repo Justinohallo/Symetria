@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <CryptoWallet msg="Welcome to Your Vue.js App"/>
-    <img src=../src/data/images/ltc.svg>
+    <CryptoWallet />
+    
   </div>
   
 </template>
@@ -16,14 +16,20 @@ export default {
   },
 };
 </script>
+<style lang="scss">
+* {
+  box-sizing: border-box;
+}
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+html {
+  font-size: 62.5%;
+}
+
+body {
+  background: #84c4a1;
+  color: #333;
+  font-family: Arial, Helvetica, sans-serif, sans-serif;
+  font-size: 1.6;
+  line-height: 1.2;
 }
 </style>
