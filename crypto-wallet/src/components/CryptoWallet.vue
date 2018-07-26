@@ -35,7 +35,7 @@
         </p>
       </div>
       <div class="currency__section--right">
-        <p class="currency__value--active">&#9650; +C$1,000.77</p>
+        <p class="currency__value--active">&#9660; -C$1,000.77</p>
         <p class="currency__value--cad-1">C$10,000.10</p>
       </div>
     </div>
@@ -114,7 +114,6 @@
         <p class="currency__value--cad-1">C$10,000.10</p>
       </div>
     </div>
-  <h1> Test </h1>
   </div>
 
 </template>
@@ -190,7 +189,7 @@ $desktop-breakpoint: 45rem;
 
 .portfolio__title {
   color: grey;
-  font-size: $font-size-medium;
+  font-size: $font-size-large;
   margin: 0;
   margin-top: $l-size;
 }
@@ -204,6 +203,7 @@ $desktop-breakpoint: 45rem;
   color: $color-increase;
   margin: 0;
   margin-bottom: $l-size;
+  font-size: $font-size-large;
 }
 
 .currency {
@@ -246,4 +246,22 @@ $desktop-breakpoint: 45rem;
 .currency__value {
   font-weight: bold;
   margin: 0;}
+
+  .currency__value--cad {
+  font-weight: normal;
+  margin: 0;
+}
+
+.currency__value--active {
+  color: $color-increase;
+  font-weight: bold;
+  font-size: $font-size-xlarge;
+  margin: 0;
+}
+
+.currency__value--cad-1 {
+  color: grey;
+  font-weight: bold;
+  margin: 0;
+}
 </style>

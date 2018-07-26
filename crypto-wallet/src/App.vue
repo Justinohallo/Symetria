@@ -17,9 +17,10 @@ export default {
 };
 </script>
 <style lang="scss">
-* {
-  box-sizing: border-box;
-}
+
+// * {
+//   box-sizing: border-box;
+// }
 
 html {
   font-size: 62.5%;
@@ -28,7 +29,7 @@ html {
 body {
   background: #84c4a1;
   color: #333;
-  font-family: Arial, Helvetica, sans-serif, sans-serif;
+  font-family: "Roboto"; 
   font-size: 1.6;
   line-height: 1.2;
 }
