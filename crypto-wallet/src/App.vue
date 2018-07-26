@@ -1,17 +1,18 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <CryptoWallet msg="Welcome to Your Vue.js App"/>
+    <img src=../src/data/images/ltc.svg>
   </div>
+  
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue';
+import CryptoWallet from './components/CryptoWallet.vue';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld,
+  CryptoWallet,
   },
 };
 </script>
