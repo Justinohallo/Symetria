@@ -5,126 +5,219 @@
       <h1 class="heading__title"> Your Portfolio </h1>
     </div>
     <div class="portfolio">
-      <h2 class="portfolio__title">PORTFOLIO VALUE</h2>
+      <h2 class="portfolio__title" >PORTFOLIO VALUE</h2>
       <h1 class="portfolio__value">C$19,500.31</h1>
       <p class="portfolio__change">&#9650; +$8,700.86</p>
     </div>
-    <div class="currency">
-      <div class="currency__section--left">
-        <img class="currency__icon" src="../data/images/btc.svg" alt="">
+    <button @click='displayWallet()'> View Portfolio </button>
+    Loading
+    <div class='totalWallet' v-show='walletStatus'>
+    <div class="wallet">
+      <div class="wallet__section--left">
+        <img class="wallet__icon" src="../data/images/btc.svg" alt="">
       </div>
-      <div class="currency__section--middle">
-        <p class="currency__symbol">BTC</p>
-        <p class="currency__value">0.5001 BTC
-          <span class="currency__value--cad">/ C$10,000.10</span>
+      <div class="wallet__section--middle">
+        <p class="wallet__cryptoAsset">BTC</p>
+        <p class="wallet__value--cryptoAsset">0.5001 BTC
+          <span class="crypto__price--cad">/ C$10,000.10</span>
         </p>
       </div>
-      <div class="currency__section--right">
-        <p class="currency__value--active">&#9650; +C$1,000.77</p>
-        <p class="currency__value--cad-1">C$10,000.10</p>
+      <div class="wallet__section--right">
+        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
+        <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
-    <div class="currency">
-      <div class="currency__section--left">
-        <img class="currency__icon" src="../data/images/eth.svg" alt="">
+    <div class="wallet">
+      <div class="wallet__section--left">
+        <img class="wallet__icon" src="../data/images/eth.svg" alt="">
       </div>
-      <div class="currency__section--middle">
-        <p class="currency__symbol">ETH</p>
-        <p class="currency__value">0.5001 BTC
-          <span class="currency__value--cad">/ C$10,000.10</span>
+      <div class="wallet__section--middle">
+        <p class="wallet__cryptoAsset">ETH</p>
+        <p class="wallet__value--cryptoAsset">0.5001 BTC
+          <span class="crypto__price--cad">/ C$10,000.10</span>
         </p>
       </div>
-      <div class="currency__section--right">
-        <p class="currency__value--active">&#9660; -C$1,000.77</p>
-        <p class="currency__value--cad-1">C$10,000.10</p>
+      <div class="wallet__section--right">
+        <p class="wallet__value--active">&#9660; -C$1,000.77</p>
+        <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
-    <div class="currency">
-      <div class="currency__section--left">
-        <img class="currency__icon" src="../data/images/ltc.svg" alt="">
+    <div class="wallet">
+      <div class="wallet__section--left">
+        <img class="wallet__icon" src="../data/images/ltc.svg" alt="">
       </div>
-      <div class="currency__section--middle">
-        <p class="currency__symbol">LTC</p>
-        <p class="currency__value">0.5001 BTC
-          <span class="currency__value--cad">/ C$10,000.10</span>
+      <div class="wallet__section--middle">
+        <p class="wallet__cryptoAsset">LTC</p>
+        <p class="wallet__value--cryptoAsset">0.5001 BTC
+          <span class="crypto__price--cad">/ C$10,000.10</span>
         </p>
       </div>
-      <div class="currency__section--right">
-        <p class="currency__value--active">&#9650; +C$1,000.77</p>
-        <p class="currency__value--cad-1">C$10,000.10</p>
+      <div class="wallet__section--right">
+        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
+        <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
-    <div class="currency">
-      <div class="currency__section--left">
-        <img class="currency__icon" src="../data/images/xmr.svg" alt="">
+    <div class="wallet">
+      <div class="wallet__section--left">
+        <img class="wallet__icon" src="../data/images/xmr.svg" alt="">
       </div>
-      <div class="currency__section--middle">
-        <p class="currency__symbol">XMR</p>
-        <p class="currency__value">0.5001 BTC
-          <span class="currency__value--cad">/ C$10,000.10</span>
+      <div class="wallet__section--middle">
+        <p class="wallet__cryptoAsset">XMR</p>
+        <p class="wallet__value--cryptoAsset">0.5001 BTC
+          <span class="crypto__price--cad">/ C$10,000.10</span>
         </p>
       </div>
-      <div class="currency__section--right">
-        <p class="currency__value--active">&#9650; +C$1,000.77</p>
-        <p class="currency__value--cad-1">C$10,000.10</p>
+      <div class="wallet__section--right">
+        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
+        <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
-    <div class="currency">
-      <div class="currency__section--left">
-        <img class="currency__icon" src="../data/images/doge.svg" alt="">
+    <div class="wallet">
+      <div class="wallet__section--left">
+        <img class="wallet__icon" src="../data/images/doge.svg" alt="">
       </div>
-      <div class="currency__section--middle">
-        <p class="currency__symbol">Doge</p>
-        <p class="currency__value">0.5001 BTC
-          <span class="currency__value--cad">/ C$10,000.10</span>
+      <div class="wallet__section--middle">
+        <p class="wallet__cryptoAsset">Doge</p>
+        <p class="wallet__value--cryptoAsset">0.5001 BTC
+          <span class="crypto__price--cad">/ C$10,000.10</span>
         </p>
       </div>
-      <div class="currency__section--right">
-        <p class="currency__value--active">&#9650; +C$1,000.77</p>
-        <p class="currency__value--cad-1">C$10,000.10</p>
+      <div class="wallet__section--right">
+        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
+        <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
-    <div class="currency">
-      <div class="currency__section--left">
-        <img class="currency__icon" src="../data/images/eth.svg" alt="">
+    <div class="wallet">
+      <div class="wallet__section--left">
+        <img class="wallet__icon" src="../data/images/eth.svg" alt="">
       </div>
-      <div class="currency__section--middle">
-        <p class="currency__symbol">ETH</p>
-        <p class="currency__value">0.5001 BTC
-          <span class="currency__value--cad">/ C$10,000.10</span>
+      <div class="wallet__section--middle">
+        <p class="wallet__cryptoAsset">ETH</p>
+        <p class="wallet__value--cryptoAsset">0.5001 BTC
+          <span class="crypto__price--cad">/ C$10,000.10</span>
         </p>
       </div>
-      <div class="currency__section--right">
-        <p class="currency__value--active">&#9650; +C$1,000.77</p>
-        <p class="currency__value--cad-1">C$10,000.10</p>
+      <div class="wallet__section--right">
+        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
+        <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
-    <div class="currency">
-      <div class="currency__section--left">
-        <img class="currency__icon" src="../data/images/ltc.svg" alt="">
+    <div class="wallet">
+      <div class="wallet__section--left">
+        <img class="wallet__icon" src="../data/images/ltc.svg" alt="">
       </div>
-      <div class="currency__section--middle">
-        <p class="currency__symbol">LTC</p>
-        <p class="currency__value">0.5001 BTC
-          <span class="currency__value--cad">/ C$10,000.10</span>
+      <div class="wallet__section--middle">
+        <p class="wallet__cryptoAsset">LTC</p>
+        <p class="wallet__value--cryptoAsset">0.5001 BTC
+          <span class="crypto__price--cad">/ C$10,000.10</span>
         </p>
       </div>
-      <div class="currency__section--right">
-        <p class="currency__value--active">&#9650; +C$1,000.77</p>
-        <p class="currency__value--cad-1">C$10,000.10</p>
+      <div class="wallet__section--right">
+        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
+        <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
+    </div>
+    <button v-show='true' @click='getWallets()'></button>
+    TEST: {{loadedWallets.ETH.hello}}
+    <ul>
+      <li v-for="item in items">
+          <div class="wallet">
+      <div class="wallet__section--left">
+        <img  :src=" ethWallet " alt=""/>
+         <img class="wallet__icon" src="../data/images/ltc.svg" alt="">
+
+      </div>
+      <div class="wallet__section--middle">
+        <p class="wallet__cryptoAsset">{{item.currency}}</p>
+        <p class="wallet__value--cryptoAsset">{{item.amount}} {{item.currency}}
+          <span class="crypto__price--cad">/ C$10,000.10</span>
+        </p>
+      </div>
+      <div class="wallet__section--right">
+        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
+        <p class="wallet__value--cad">C$10,000.10</p>
+      </div>
+    </div>
+      </li>
+    </ul>
   </div>
 
 </template>
 
 <script>
 export default {
-  name: 'CryptoWallet',
+  name: "CryptoWallet",
   props: {
-    msg: String,
+    msg: String
   },
+  data() {
+    return {
+      test: 0,
+      btcWallet: "Hi",
+      ethWallet: "../data/images/ltc.svg",
+      walletStatus: true,
+      items: [
+        { currency: "BTC", amount: 12, changeToday: 300, img: "ltc.svg" },
+        { currency: "LTC", amount: 24, changeToday: 3000 }
+      ], 
+    };
+  },
+  computed: {
+    loadedWallets() {
+      return {
+        BTC: { title: "test" },
+        ETH: { hello: "Hi" },
+        LTC: "",
+        DOGE: "",
+        XMR: ""
+      };
+    }
+  },
+  methods: {
+    displayWallet() {
+      this.walletStatus = !this.walletStatus
+    },
+
+    getWallets() {
+      return new Promise(function(resolve, reject) {
+        console.log("Success");
+        setTimeout(function() {
+          if (Math.random() < 0.2) {
+            reject("Could not connect to server");
+            return;
+          }
+
+          resolve([
+            new Wallet("BTC", 0.5001, 1000.77),
+            new Wallet("ETH", 1.2211, -213.4),
+            new Wallet("LTC", 105.3177, 0),
+            new Wallet("XMR", 1, 0.48)
+          ]);
+        }, 250);
+      });
+    }
+  }
 };
+
+const Wallet = function(currency, amount, changeToday) {
+  this.currency = currency;
+  this.amount = amount;
+  this.changeToday = changeToday;
+};
+
+const ExchangeRate = function(currency, rate) {
+  this.currency = currency;
+  this.rate = rate;
+};
+
+const ExchangeRatesToCAD = [
+  new ExchangeRate("BTC", 10100),
+  new ExchangeRate("XMR", 320.45),
+  new ExchangeRate("LTC", 241.4),
+  new ExchangeRate("DOGE", 0.00041),
+  new ExchangeRate("ETH", 500.12717)
+];
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -156,8 +249,6 @@ $m-size: 1.6rem;
 $l-size: 3.2rem;
 $xl-size: 4.8rem;
 $desktop-breakpoint: 45rem;
-
-
 
 .container {
   background: $white;
@@ -206,7 +297,7 @@ $desktop-breakpoint: 45rem;
   font-size: $font-size-large;
 }
 
-.currency {
+.wallet {
   border: 1px solid $light-grey;
   border-radius: 3px;
   box-shadow: 0px 0px 5px 2px #ddd;
@@ -216,52 +307,59 @@ $desktop-breakpoint: 45rem;
   padding: $s-size;
 }
 
-.currency__section--left {
+.wallet__section--left {
   display: flex;
   align-items: center;
 }
 
-.currency__section--middle {
+.wallet__section--middle {
   flex: 1;
   margin: 0 $xs-size;
 }
 
-.currency__section--right {
+.wallet__section--right {
   align-items: flex-end;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-.currency__icon {
+.wallet__icon {
   width: $l-size;
   height: $l-size;
 }
 
-.currency__symbol {
+.wallet__cryptoAsset {
   font-weight: bold;
   margin: 0;
 }
 
-.currency__value {
+.wallet__value--cryptoAsset {
   font-weight: bold;
-  margin: 0;}
+  margin: 0;
+}
 
-  .currency__value--cad {
+.crypto__price--cad {
   font-weight: normal;
   margin: 0;
 }
 
-.currency__value--active {
+.wallet__value--active {
   color: $color-increase;
   font-weight: bold;
   font-size: $font-size-xlarge;
   margin: 0;
 }
 
-.currency__value--cad-1 {
+.wallet__value--cad {
   color: grey;
   font-weight: bold;
+  margin: 0;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
   margin: 0;
 }
 </style>
