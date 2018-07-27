@@ -27,66 +27,10 @@
         <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
-    <div class="wallet">
-      <div class="wallet__section--left">
-        <img class="wallet__icon" src="../data/images/eth.svg" alt="">
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">ETH</p>
-        <p class="wallet__value--cryptoAsset">0.5001 BTC
-          <span class="crypto__price--cad">/ C$10,000.10</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9660; -C$1,000.77</p>
-        <p class="wallet__value--cad">C$10,000.10</p>
-      </div>
-    </div>
-    <div class="wallet">
-      <div class="wallet__section--left">
-        <img class="wallet__icon" src="../data/images/ltc.svg" alt="">
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">LTC</p>
-        <p class="wallet__value--cryptoAsset">0.5001 BTC
-          <span class="crypto__price--cad">/ C$10,000.10</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
-        <p class="wallet__value--cad">C$10,000.10</p>
-      </div>
-    </div>
-    <div class="wallet">
-      <div class="wallet__section--left">
-        <img class="wallet__icon" src="../data/images/xmr.svg" alt="">
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">XMR</p>
-        <p class="wallet__value--cryptoAsset">0.5001 BTC
-          <span class="crypto__price--cad">/ C$10,000.10</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
-        <p class="wallet__value--cad">C$10,000.10</p>
-      </div>
-    </div>
-    <div class="wallet">
-      <div class="wallet__section--left">
-        <img class="wallet__icon" src="../data/images/doge.svg" alt="">
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">Doge</p>
-        <p class="wallet__value--cryptoAsset">0.5001 BTC
-          <span class="crypto__price--cad">/ C$10,000.10</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
-        <p class="wallet__value--cad">C$10,000.10</p>
-      </div>
-    </div>
+
+
+
+
     <div class="wallet">
       <div class="wallet__section--left">
         <img class="wallet__icon" src="../data/images/eth.svg" alt="">
@@ -130,17 +74,19 @@
       </div>
       <div class="wallet__section--middle">
         <p class="wallet__cryptoAsset">{{item.currency}}</p>
-        <p class="wallet__value--cryptoAsset">{{item.amount}} {{item.currency}}
-          <span class="crypto__price--cad">/ C$10,000.10</span>
+        <p class="wallet__value--cryptoAsset">{{item.amount.toLocaleString('en')}} {{item.currency}}
+          <span class="crypto__price--cad">/ ${{item.rate.toLocaleString('en')}}</span>
         </p>
       </div>
       <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
+        <p class="wallet__value--active">&#9650; C{{item.changeToday.toLocaleString('en')}}</p>
         <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
       </li>
     </ul>
+       <button @click='walletTotal()'> View Portfolio </button>
+       {{this.walletValue}}
   </div>
 
 </template>
@@ -157,10 +103,17 @@ export default {
       btcWallet: "Hi",
       ethWallet: "../data/images/ltc.svg",
       walletStatus: true,
+      walletValue:'',
+      rate: 10000,
       items: [
-        { currency: "BTC", amount: 12, changeToday: 300, img: "ltc.svg" },
-        { currency: "LTC", amount: 24, changeToday: 3000 }
+        { currency: "BTC", amount: 0.5, changeToday: 300, img: "ltc.svg", rate:10100 },
+        { currency: "ETH", amount: 10, changeToday: -400, rate:10000 },
+        { currency: "LTC", amount: 34, changeToday: 0, rate: 0.5 },
+        { currency: "XMR", amount: 64, changeToday: 3000, rate: 1}
       ], 
+      exchangeRate: [
+        {currency:'BTC', rate:'10100'}
+      ]
     };
   },
   computed: {
@@ -178,6 +131,19 @@ export default {
     displayWallet() {
       this.walletStatus = !this.walletStatus
     },
+    walletTotal (){
+    const rate = this.exchangeRate[0].rate
+    const cryptoAsset = this.items[0].amount
+      console.log(this.exchangeRate[0].rate)
+      console.log(this.items[0].amount)
+      const total = rate*cryptoAsset
+      this.walletValue = total
+      console.log(this.walletValue)
+      
+      
+  
+    },
+
 
     getWallets() {
       return new Promise(function(resolve, reject) {
