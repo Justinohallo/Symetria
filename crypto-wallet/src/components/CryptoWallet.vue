@@ -8,9 +8,9 @@
       <h2 class="portfolio__title" >PORTFOLIO VALUE</h2>
       <h1 class="portfolio__value">C$19,500.31</h1>
       <p class="portfolio__change">&#9650; +$8,700.86</p>
+      <button class="displayPortfolio" @click='displayWallet()'> View Portfolio  </button>
     </div>
-    <button @click='displayWallet()'> View Portfolio </button>
-    Loading
+    
     <div class='totalWallet' v-show='walletStatus'>
     <div class="wallet">
       <div class="wallet__section--left">
@@ -26,72 +26,40 @@
         <p class="wallet__value--active">&#9650; +C$1,000.77</p>
         <p class="wallet__value--cad">C$10,000.10</p>
       </div>
-    </div>
-
-
-
-
-    <div class="wallet">
-      <div class="wallet__section--left">
-        <img class="wallet__icon" src="../data/images/eth.svg" alt="">
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">ETH</p>
-        <p class="wallet__value--cryptoAsset">0.5001 BTC
-          <span class="crypto__price--cad">/ C$10,000.10</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
-        <p class="wallet__value--cad">C$10,000.10</p>
-      </div>
-    </div>
-    <div class="wallet">
-      <div class="wallet__section--left">
-        <img class="wallet__icon" src="../data/images/ltc.svg" alt="">
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">LTC</p>
-        <p class="wallet__value--cryptoAsset">0.5001 BTC
-          <span class="crypto__price--cad">/ C$10,000.10</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
-        <p class="wallet__value--cad">C$10,000.10</p>
-      </div>
-    </div>
-    </div>
-    <button v-show='true' @click='getWallets()'></button>
-    TEST: {{loadedWallets.ETH.hello}}
-    <ul>
+    </div>  
+        <ul>
       <li v-for="item in items">
           <div class="wallet">
       <div class="wallet__section--left">
-        <img  :src=" ethWallet " alt=""/>
+        <img  alt=""/>
          <img class="wallet__icon" src="../data/images/ltc.svg" alt="">
 
       </div>
       <div class="wallet__section--middle">
         <p class="wallet__cryptoAsset">{{item.currency}}</p>
         <p class="wallet__value--cryptoAsset">{{item.amount.toLocaleString('en')}} {{item.currency}}
-          <span class="crypto__price--cad">/ ${{item.rate.toLocaleString('en')}}</span>
+          <span class="crypto__price--cad">/ {{item.rate.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</span>
         </p>
       </div>
       <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9650; C{{item.changeToday.toLocaleString('en')}}</p>
+        <p  class="wallet__value--active">  {{item.changeToday.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</p>
         <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
       </li>
-    </ul>
-       <button @click='walletTotal()'> View Portfolio </button>
-       {{this.walletValue}}
+    </ul>  
+    </div>
+   <button class="displayPortfolio" @click='ExchangeRate()'> View Portfolio  </button>
+  Test: {{this.ExchangesToCAD}}
+  {{Wallet}}
   </div>
 
 </template>
 
 <script>
+
+import API from "../data/ApiMock.js"
+
 export default {
   name: "CryptoWallet",
   props: {
@@ -99,91 +67,66 @@ export default {
   },
   data() {
     return {
+      API,
+      ExchangeRatesToCad:API.ExchangeRatesToCAD,
+      Wallet: API.Wallet,
       test: 0,
-      btcWallet: "Hi",
-      ethWallet: "../data/images/ltc.svg",
+      gain: "▲",
+      loss: 9660,
       walletStatus: true,
-      walletValue:'',
-      rate: 10000,
+     
       items: [
-        { currency: "BTC", amount: 0.5, changeToday: 300, img: "ltc.svg", rate:10100 },
-        { currency: "ETH", amount: 10, changeToday: -400, rate:10000 },
+        {
+          currency: "BTC",
+          amount: 0.5,
+          changeToday: 300,
+          img: "ltc.svg",
+          rate: 10100
+        },
+        { currency: "ETH", amount: 10, changeToday: -400, rate: 10000 },
         { currency: "LTC", amount: 34, changeToday: 0, rate: 0.5 },
-        { currency: "XMR", amount: 64, changeToday: 3000, rate: 1}
-      ], 
-      exchangeRate: [
-        {currency:'BTC', rate:'10100'}
-      ]
+        { currency: "XMR", amount: 64, changeToday: 3000, rate: 1 }
+      ],
     };
   },
   computed: {
-    loadedWallets() {
-      return {
-        BTC: { title: "test" },
-        ETH: { hello: "Hi" },
-        LTC: "",
-        DOGE: "",
-        XMR: ""
-      };
-    }
+    GetWallets() {
+
+	return new Promise(function (resolve, reject) {
+
+		setTimeout(function () {
+
+			if (Math.random() < 0.2) {
+				reject("Could not connect to server");
+				return;
+			}
+
+			resolve([
+
+				new Wallet("BTC", 0.5001, 1000.77),
+				new Wallet("ETH", 1.2211, -213.40),
+				new Wallet("LTC", 105.3177, 0),
+				new Wallet("XMR", 1, 0.48)
+
+			]);
+
+		}, 250);
+
+	});
+
+}
   },
   methods: {
+    ExchangeRate(currency,rate){
+      this.currency = currency;
+      this.rate=rate
+    },
     displayWallet() {
-      this.walletStatus = !this.walletStatus
+      this.walletStatus = !this.walletStatus;
     },
-    walletTotal (){
-    const rate = this.exchangeRate[0].rate
-    const cryptoAsset = this.items[0].amount
-      console.log(this.exchangeRate[0].rate)
-      console.log(this.items[0].amount)
-      const total = rate*cryptoAsset
-      this.walletValue = total
-      console.log(this.walletValue)
-      
-      
-  
-    },
-
-
-    getWallets() {
-      return new Promise(function(resolve, reject) {
-        console.log("Success");
-        setTimeout(function() {
-          if (Math.random() < 0.2) {
-            reject("Could not connect to server");
-            return;
-          }
-
-          resolve([
-            new Wallet("BTC", 0.5001, 1000.77),
-            new Wallet("ETH", 1.2211, -213.4),
-            new Wallet("LTC", 105.3177, 0),
-            new Wallet("XMR", 1, 0.48)
-          ]);
-        }, 250);
-      });
-    }
+   
   }
 };
-
-const Wallet = function(currency, amount, changeToday) {
-  this.currency = currency;
-  this.amount = amount;
-  this.changeToday = changeToday;
-};
-
-const ExchangeRate = function(currency, rate) {
-  this.currency = currency;
-  this.rate = rate;
-};
-
-const ExchangeRatesToCAD = [
-  new ExchangeRate("BTC", 10100),
-  new ExchangeRate("XMR", 320.45),
-  new ExchangeRate("LTC", 241.4),
-  new ExchangeRate("DOGE", 0.00041),
-  new ExchangeRate("ETH", 500.12717)
-];
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -321,6 +264,17 @@ $desktop-breakpoint: 45rem;
   color: grey;
   font-weight: bold;
   margin: 0;
+}
+.displayPortfolio {
+  margin: 10px;
+  background: #e2a14c;
+  display: inline-block;
+  padding: 0.5rem 2rem;
+  font-size: 1rem;
+  font-weight: 700;
+  vertical-align: top;
+  color: #fff;
+  cursor: pointer;
 }
 
 ul {
