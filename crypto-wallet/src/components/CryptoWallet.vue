@@ -8,7 +8,7 @@
       <h2 class="portfolio__title" >PORTFOLIO VALUE</h2>
       <h1 class="portfolio__value">C$19,500.31</h1>
       <p class="portfolio__change">&#9650; +$8,700.86</p>
-      <button class="displayPortfolio" @click='displayWallet()'> View Portfolio  </button>
+      <button class="displayPortfolio" @click='displayWallet(); GetWallets()'> View Portfolio  </button>
     </div>
     
     <div class='totalWallet' v-show='walletStatus'>
@@ -50,8 +50,10 @@
     </ul>  
     </div>
    <button class="displayPortfolio" @click='ExchangeRate()'> View Portfolio  </button>
-  Test: {{this.ExchangesToCAD}}
+  Test: {{ExchangeRatesToCAD}}
   {{Wallet}}
+  </br>
+  <!-- {{GetWallets.data[0]}} -->
   </div>
 
 </template>
@@ -68,13 +70,15 @@ export default {
   data() {
     return {
       API,
-      ExchangeRatesToCad:API.ExchangeRatesToCAD,
+      ExchangeRate:API.ExchangeRate,
+      ExchangeRatesToCAD:API.ExchangeRatesToCAD,
       Wallet: API.Wallet,
       test: 0,
       gain: "▲",
       loss: 9660,
       walletStatus: true,
-     
+      // newWallets: GetWallets.asset,
+     array: [],
       items: [
         {
           currency: "BTC",
@@ -90,12 +94,15 @@ export default {
     };
   },
   computed: {
-    GetWallets() {
+        GetWallets() {
 
+let Wallet = this.Wallet
+this.array = []
+let test = this.array
 	return new Promise(function (resolve, reject) {
-
+  
 		setTimeout(function () {
-
+    
 			if (Math.random() < 0.2) {
 				reject("Could not connect to server");
 				return;
@@ -106,24 +113,64 @@ export default {
 				new Wallet("BTC", 0.5001, 1000.77),
 				new Wallet("ETH", 1.2211, -213.40),
 				new Wallet("LTC", 105.3177, 0),
-				new Wallet("XMR", 1, 0.48)
+        new Wallet("XMR", 1, 0.48)
+
+        
 
 			]);
 
 		}, 250);
 
-	});
+	}).then(function(data){
+console.log(data)
+  
+  
+});
 
 }
+
   },
   methods: {
-    ExchangeRate(currency,rate){
-      this.currency = currency;
-      this.rate=rate
-    },
     displayWallet() {
       this.walletStatus = !this.walletStatus;
+      let coin = this.walletStatus
+      console.log(coin)
     },
+    GetWallets() {
+
+let Wallet = this.Wallet
+this.array = []
+let test = this.array
+	return new Promise(function (resolve, reject) {
+  
+		setTimeout(function () {
+    
+			if (Math.random() < 0.2) {
+				reject("Could not connect to server");
+				return;
+			}
+
+			resolve([
+
+				new Wallet("BTC", 0.5001, 1000.77),
+				new Wallet("ETH", 1.2211, -213.40),
+				new Wallet("LTC", 105.3177, 0),
+        new Wallet("XMR", 1, 0.48)
+
+        
+
+			]);
+
+		}, 250);
+
+	}).then(function(data){
+ return data
+
+  
+  
+});
+
+}
    
   }
 };
