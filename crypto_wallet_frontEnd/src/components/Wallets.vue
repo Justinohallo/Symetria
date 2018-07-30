@@ -1,6 +1,5 @@
 <template>
     <div class='totalWallet' >
-   HIIIIII
         <ul>
       <li v-for="wallet in walletArray" >
           <div class="wallet">
@@ -25,23 +24,21 @@
     </div>
 </template>
 <script>
-import API from "../data/ApiMock.js"
-
+import API from "../data/ApiMock.js";
 
 export default {
- data() {
+  data() {
     return {
-      ExchangeRatesToCAD:this.$store.state.ExchangeRatesToCAD,
+      ExchangeRatesToCAD: this.$store.state.ExchangeRatesToCAD,
       ExchangeRate: this.$store.state.ExchangeRate,
       Wallet: this.$store.state.Wallet,
       test: this.$store.state.ExchangeRatesToCAD,
       walletArray: API.userWallets
-
-}}}
-
+    };
+  }
+};
 </script>
 <style lang='scss'>
-
 // Color
 $dark-grey: #333;
 $light-grey: #ccc;

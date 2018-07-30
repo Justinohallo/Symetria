@@ -9,176 +9,88 @@
       <h1 class="portfolio__value">C$19,500.31</h1>
       <p class="portfolio__change">&#9650; +$8,700.86</p>
       <button v-show="render" class="displayPortfolio" @click='displayWallet(); GetWallets1()'> View Portfolio  </button>
+      <button v-show="render" class="displayPortfolio" @click='displayWallet(); GetWallets1()'> Hide Portfolio  </button>
     </div>
-   
-    <div class='totalWallet' v-show='walletStatus'>
-   <Wallets/>
-        <ul>
-      <li v-for="wallet in walletArray" v-show="cart.length > 1">
-          <div class="wallet">
-      <div class="wallet__section--left">
-        <img  alt=""/>
-         <img class="wallet__icon" :src='wallet.image' alt="">
-
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">{{wallet.currency}}</p>
-        <p class="wallet__value--cryptoAsset">{{wallet.amount.toLocaleString('en')}} {{wallet.currency}}
-          <span class="crypto__price--cad">/ {{wallet.rate.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p  class="wallet__value--active">  {{wallet.changeToday.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</p>
-        <p class="wallet__value--cad">C$10,000.10</p>
-      </div>
-    </div>
-      </li>
-    </ul>  
-    </div>
-   <button class="displayPortfolio" @click='ExchangeRate()'> View Portfolio  </button>
-  Wallet Array {{walletArray}}
-  Image Array {{ imageArray}}
-  Exchange Array {{exchangeArray}}
-    
+   <Wallets v-show='walletStatus'/> 
   </div>
-
 </template>
 
 <script>
-import Wallets from "./Wallets.vue"
-import API from "../data/ApiMock.js"
+import Wallets from "./Wallets.vue";
+import API from "../data/ApiMock.js";
 
 export default {
   name: "CryptoWallet",
-  components: {Wallets},
+  components: { Wallets },
   props: {
     msg: String
   },
 
-beforeMount(){
-  this.render = true
-},
-
-
+  beforeMount() {
+    this.render = true;
+  },
 
   data() {
     return {
-
-      ExchangeRatesToCAD:this.$store.state.ExchangeRatesToCAD,
+      ExchangeRatesToCAD: this.$store.state.ExchangeRatesToCAD,
       ExchangeRate: this.$store.state.ExchangeRate,
       Wallet: this.$store.state.Wallet,
-      test: this.$store.state.ExchangeRatesToCAD,
-      images: API.images,
       gain: "▲",
       loss: 9660,
       walletStatus: false,
       render: false,
-      // newWallets: GetWallets.asset,
-     walletArray: API.userWallets,
-     imageArray: [
-  {currency: 'BTC', img: '../btc.svg'},
-  {currency: 'ETH', img: '../eth.svg'},
-  {currency: 'LTC', img: '../ltc.svg'},
-
-],
-
-userWallets:[
-   { currency: 'BTC',
-    amount: 0.5001,
-    changeToday: 1000.77,
-    image: '../data/images/ltc.svg',
-    rate: 10100 },
-  { currency: 'ETH',
-    amount: 1.2211,
-    changeToday: -213.4,
-    image: ('../images/eth.svg'),
-    rate: 500.12717 },
-  { currency: 'LTC',
-    amount: 105.3177,
-    changeToday: 0,
-    image: '../ltc.svg',
-    rate: 60 },
-  { currency: 'XMR',
-    amount: 1,
-    changeToday: 0.48,
-    image: '../xmr.svg',
-    rate: 320.45 } 
-],
-     exchangeArray:this.$store.state.ExchangeRatesToCAD,
-      items: [
-        {
-          currency: "BTC",
-          amount: 0.5,
-          changeToday: 300,
-          img: "ltc.svg",
-          rate: 10100
-        },
-        { currency: "ETH", amount: 10, changeToday: -400, rate: 10000 },
-        { currency: "LTC", amount: 34, changeToday: 0, rate: 0.5 },
-        { currency: "XMR", amount: 64, changeToday: 3000, rate: 1 }
-      ],
+      walletArray: API.userWallets,
+      imageArray: [],
+      userWallets: [],
+      items: []
     };
   },
   computed: {
-    cart(){
-      return this.$store.state.Wallet
-    },
-    
-
-},
+    cart() {
+      return this.$store.state.Wallet;
+    }
+  },
   methods: {
-    combineWallets(){
-    Wallet.forEach((item) => {
-	const image = images.find((image) => {
-		return image.currency === item.currency
-	})
-	const exchange = exchangeRates.find((exchange) => {
-		return exchange.currency === item.currency
-	})
-	item.image = image.img
-	item.rate = exchange.exchangeRate
-})
+    combineWallets() {
+      Wallet.forEach(item => {
+        const image = images.find(image => {
+          return image.currency === item.currency;
+        });
+        const exchange = exchangeRates.find(exchange => {
+          return exchange.currency === item.currency;
+        });
+        item.image = image.img;
+        item.rate = exchange.exchangeRate;
+      });
     },
-  
     displayWallet() {
       this.walletStatus = !this.walletStatus;
-      this.$store.commit('walletData', this.ExchangeRatesToCAD)
+      this.$store.commit("walletData", this.ExchangeRatesToCAD);
     },
     GetWallets1() {
-       this.Wallet = this.Wallet
-       let Wallet = this.Wallet
-	return new Promise(function (resolve, reject) {
-  
-		setTimeout(function () {
-    
-			if (Math.random() < 0.2) {
-				reject("Could not connect to server");
-				return;
-			}
+      this.Wallet = this.Wallet;
+      let Wallet = this.Wallet;
+      return new Promise(function(resolve, reject) {
+        setTimeout(function() {
+          if (Math.random() < 0.2) {
+            reject("Could not connect to server");
+            return;
+          }
 
-			resolve([
-
-				new Wallet("BTC", 0.5001, 1000.77),
-				new Wallet("ETH", 1.2211, -213.40),
-				new Wallet("LTC", 105.3177, 0),
-        new Wallet("XMR", 1, 0.48)
-
-        
-
-			]);
-
-		}, 250);
-
-	}).then((data) =>{
-  this.$store.commit('walletData', data)
-  return this.walletArray = data
-})
-
-}
-   
+          resolve([
+            new Wallet("BTC", 0.5001, 1000.77),
+            new Wallet("ETH", 1.2211, -213.4),
+            new Wallet("LTC", 105.3177, 0),
+            new Wallet("XMR", 1, 0.48)
+          ]);
+        }, 250);
+      }).then(data => {
+        this.$store.commit("walletData", data);
+        return (this.walletArray = data);
+      });
+    }
   }
 };
-
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
