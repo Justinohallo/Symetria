@@ -10,39 +10,25 @@
       <p class="portfolio__change">&#9650; +$8,700.86</p>
       <button v-show="render" class="displayPortfolio" @click='displayWallet(); GetWallets1()'> View Portfolio  </button>
     </div>
-    
+   
     <div class='totalWallet' v-show='walletStatus'>
-    <div class="wallet">
-      <div class="wallet__section--left">
-        <img class="wallet__icon" src="../data/images/btc.svg" alt="">
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">BTC</p>
-        <p class="wallet__value--cryptoAsset">0.5001 BTC
-          <span class="crypto__price--cad">/ C$10,000.10</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p class="wallet__value--active">&#9650; +C$1,000.77</p>
-        <p class="wallet__value--cad">C$10,000.10</p>
-      </div>
-    </div>  
+   <Wallets/>
         <ul>
-      <li v-for="item in items" v-show="cart.length > 1">
+      <li v-for="wallet in walletArray" v-show="cart.length > 1">
           <div class="wallet">
       <div class="wallet__section--left">
         <img  alt=""/>
-         <img class="wallet__icon" src="../data/images/ltc.svg" alt="">
+         <img class="wallet__icon" :src='wallet.image' alt="">
 
       </div>
       <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">{{item.currency}}</p>
-        <p class="wallet__value--cryptoAsset">{{item.amount.toLocaleString('en')}} {{item.currency}}
-          <span class="crypto__price--cad">/ {{item.rate.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</span>
+        <p class="wallet__cryptoAsset">{{wallet.currency}}</p>
+        <p class="wallet__value--cryptoAsset">{{wallet.amount.toLocaleString('en')}} {{wallet.currency}}
+          <span class="crypto__price--cad">/ {{wallet.rate.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</span>
         </p>
       </div>
       <div class="wallet__section--right">
-        <p  class="wallet__value--active">  {{item.changeToday.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</p>
+        <p  class="wallet__value--active">  {{wallet.changeToday.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</p>
         <p class="wallet__value--cad">C$10,000.10</p>
       </div>
     </div>
@@ -50,35 +36,30 @@
     </ul>  
     </div>
    <button class="displayPortfolio" @click='ExchangeRate()'> View Portfolio  </button>
-  
+  Wallet Array {{walletArray}}
+  Image Array {{ imageArray}}
+  Exchange Array {{exchangeArray}}
+    
   </div>
 
 </template>
 
 <script>
-
+import Wallets from "./Wallets.vue"
 import API from "../data/ApiMock.js"
 
 export default {
   name: "CryptoWallet",
+  components: {Wallets},
   props: {
     msg: String
   },
-  beforeCreate(){
-  console.log('BeforeCreate' + this.loss)
-}  ,
-created(){
-      console.log(this.$store.state.Wallet)
-      return this.$store.state.Wallet
-      
-    
-},
+
 beforeMount(){
-  console.log('before Mount' + this.test)
-},
-mounted(){
   this.render = true
 },
+
+
 
   data() {
     return {
@@ -87,12 +68,43 @@ mounted(){
       ExchangeRate: this.$store.state.ExchangeRate,
       Wallet: this.$store.state.Wallet,
       test: this.$store.state.ExchangeRatesToCAD,
+      images: API.images,
       gain: "▲",
       loss: 9660,
       walletStatus: false,
       render: false,
       // newWallets: GetWallets.asset,
-     array: [],
+     walletArray: API.userWallets,
+     imageArray: [
+  {currency: 'BTC', img: '../btc.svg'},
+  {currency: 'ETH', img: '../eth.svg'},
+  {currency: 'LTC', img: '../ltc.svg'},
+
+],
+
+userWallets:[
+   { currency: 'BTC',
+    amount: 0.5001,
+    changeToday: 1000.77,
+    image: '../data/images/ltc.svg',
+    rate: 10100 },
+  { currency: 'ETH',
+    amount: 1.2211,
+    changeToday: -213.4,
+    image: ('../images/eth.svg'),
+    rate: 500.12717 },
+  { currency: 'LTC',
+    amount: 105.3177,
+    changeToday: 0,
+    image: '../ltc.svg',
+    rate: 60 },
+  { currency: 'XMR',
+    amount: 1,
+    changeToday: 0.48,
+    image: '../xmr.svg',
+    rate: 320.45 } 
+],
+     exchangeArray:this.$store.state.ExchangeRatesToCAD,
       items: [
         {
           currency: "BTC",
@@ -127,15 +139,14 @@ mounted(){
 	item.rate = exchange.exchangeRate
 })
     },
+  
     displayWallet() {
       this.walletStatus = !this.walletStatus;
-      let coin = this.walletStatus
-      let test = "Hello"
-      console.log(coin)
       this.$store.commit('walletData', this.ExchangeRatesToCAD)
     },
     GetWallets1() {
-     let  Wallet = this.Wallet
+       this.Wallet = this.Wallet
+       let Wallet = this.Wallet
 	return new Promise(function (resolve, reject) {
   
 		setTimeout(function () {
@@ -160,12 +171,14 @@ mounted(){
 
 	}).then((data) =>{
   this.$store.commit('walletData', data)
+  return this.walletArray = data
 })
 
 }
    
   }
 };
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->

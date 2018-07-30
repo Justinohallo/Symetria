@@ -1,6 +1,4 @@
-﻿const computer = {ho:'hi'}
-const mouse = "Cord"
-
+﻿
 var Wallet = function (currency, amount, changeToday) {
 	this.currency = currency;
 	this.amount = amount;
@@ -46,9 +44,33 @@ function GetWallets() {
 
 }
 
+const images = require.context('./images', true, /\.svg$/)
+
+
+let userWallets =[
+{ currency: 'BTC',
+    amount: 0.5001,
+    changeToday: 1000.77,
+	image: images('./btc.svg'),
+    rate: 10100 },
+  { currency: 'ETH',
+    amount: 1.2211,
+    changeToday: -213.4,
+    image: images('./eth.svg'),
+    rate: 500.12717 },
+  { currency: 'LTC',
+    amount: 105.3177,
+    changeToday: 0,
+    image: images('./ltc.svg'),
+    rate: 60 },
+  { currency: 'XMR',
+    amount: 1,
+    changeToday: 0.48,
+    image: images('./xmr.svg'),
+    rate: 320.45 } ]
+
 export default  {
-	computer, 
-	mouse,
 Wallet,
 ExchangeRate,
-ExchangeRatesToCAD }
+ExchangeRatesToCAD,
+userWallets }
