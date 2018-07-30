@@ -28,7 +28,7 @@ function GetWallets() {
 
 			if (Math.random() < 0.2) {
 				reject("Could not connect to server");
-				return;
+				return "Sorry";
 			}
 
 			resolve([

@@ -28,7 +28,7 @@
       </div>
     </div>  
         <ul>
-      <li v-for="item in items">
+      <li v-for="item in items" v-show="cart.length > 1">
           <div class="wallet">
       <div class="wallet__section--left">
         <img  alt=""/>
@@ -50,8 +50,13 @@
     </ul>  
     </div>
    <button class="displayPortfolio" @click='ExchangeRate()'> View Portfolio  </button>
-  Test: {{ExchangeRatesToCAD}}
+  
+
+  TEST {{test}}
   {{Wallet}}
+  
+  
+ 
   </br>
   <!-- {{GetWallets.data[0]}} -->
   </div>
@@ -67,16 +72,19 @@ export default {
   props: {
     msg: String
   },
+  beforeCreate(){
+  console.log('Hi')
+}  ,
   data() {
     return {
-      API,
-      ExchangeRate:API.ExchangeRate,
-      ExchangeRatesToCAD:API.ExchangeRatesToCAD,
-      Wallet: API.Wallet,
-      test: 0,
+
+      ExchangeRatesToCAD:this.$store.state.ExchangeRatesToCAD,
+      ExchangeRate: this.$store.state.ExchangeRate,
+      Wallet: this.$store.state.Wallet,
+      test: this.$store.state.ExchangeRatesToCAD,
       gain: "▲",
       loss: 9660,
-      walletStatus: true,
+      walletStatus: false,
       // newWallets: GetWallets.asset,
      array: [],
       items: [
@@ -94,53 +102,40 @@ export default {
     };
   },
   computed: {
-        GetWallets() {
+    cart(){
+      return this.$store.state.Wallet
+    },
+    bitcoin(){
+      return this.$store.state.computer
+    },
+    imageData(){
+      return this
+    }
+ 
 
-let Wallet = this.Wallet
-this.array = []
-let test = this.array
-	return new Promise(function (resolve, reject) {
-  
-		setTimeout(function () {
-    
-			if (Math.random() < 0.2) {
-				reject("Could not connect to server");
-				return;
-			}
-
-			resolve([
-
-				new Wallet("BTC", 0.5001, 1000.77),
-				new Wallet("ETH", 1.2211, -213.40),
-				new Wallet("LTC", 105.3177, 0),
-        new Wallet("XMR", 1, 0.48)
-
-        
-
-			]);
-
-		}, 250);
-
-	}).then(function(data){
-console.log(data)
-  
-  
-});
-
-}
-
-  },
+},
   methods: {
+    combineWallets(){
+    Wallet.forEach((item) => {
+	const image = images.find((image) => {
+		return image.currency === item.currency
+	})
+	const exchange = exchangeRates.find((exchange) => {
+		return exchange.currency === item.currency
+	})
+	item.image = image.img
+	item.rate = exchange.exchangeRate
+})
+    },
     displayWallet() {
       this.walletStatus = !this.walletStatus;
       let coin = this.walletStatus
+      let test = "Hello"
       console.log(coin)
+      this.$store.commit('walletData', this.ExchangeRatesToCAD)
     },
     GetWallets() {
-
-let Wallet = this.Wallet
-this.array = []
-let test = this.array
+     let  Wallet = this.Wallet
 	return new Promise(function (resolve, reject) {
   
 		setTimeout(function () {
@@ -163,11 +158,8 @@ let test = this.array
 
 		}, 250);
 
-	}).then(function(data){
- return data
-
-  
-  
+	}).then((data) =>{
+  this.$store.commit('walletData', data)
 });
 
 }
