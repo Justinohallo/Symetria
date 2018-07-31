@@ -20,7 +20,7 @@ var ExchangeRatesToCAD = [
 function GetWallets() {
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
-      if (Math.random() < 0.2) {
+      if (Math.random() < 0.8) {
         reject("Could not connect to server");
         return;
       }
@@ -55,7 +55,7 @@ const imageArray = [
     currency: "XMR",
     image: images("./xmr.svg")
   }
-];
+]
 
 
 export default {
@@ -63,5 +63,5 @@ export default {
   ExchangeRate,
   ExchangeRatesToCAD,
   GetWallets,
-  imageArray
+  imageArray,
 };

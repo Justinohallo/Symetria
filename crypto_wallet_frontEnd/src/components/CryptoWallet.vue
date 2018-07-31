@@ -52,7 +52,7 @@ export default {
   methods: {
     displayWallet() {
       this.walletStatus = !this.walletStatus;
-      this.$store.commit("walletData", this.ExchangeRatesToCAD);
+      
     },
   }
 };

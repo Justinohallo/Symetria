@@ -1,17 +1,15 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import API from "../data/ApiMock.js";
+import Wallets from "../components/Wallets.vue"
 
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    Wallet: API.Wallet,
+    Wallet: Wallets.userWallet,
     ExchangeRatesToCAD: API.ExchangeRatesToCAD,
     ExchangeRate: API.ExchangeRate,
-    imageData: [],
-    computer: API.computer,
-    userWallet: []
   },
   actions: {
   },

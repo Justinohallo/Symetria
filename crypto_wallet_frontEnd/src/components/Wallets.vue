@@ -32,23 +32,28 @@ export default {
   data() {
     return {
       ExchangeRatesToCAD: API.ExchangeRatesToCAD,
-      //   ExchangeRate: this.$store.state.ExchangeRate,
-      //   Wallet: this.$store.state.Wallet,
-      //   walletArray: API.userWallets,
-      //   GetWalletsFunction: API.GetWalletsFunction,
       GetWallets: API.GetWallets,
       Wallet: [],
       images: API.imageArray,
-      userWallet: []
+      userWallet: [],
+      serverFailure:''
     };
   },
   beforeMount() {
-    this.GetWallets().then(data => {
+    
+ this.GetWallets().then(data => {
       this.Wallet = this.Wallet.concat(data);
-    });
+    }).catch(e => {
+    console.log(e);
+})
+
+console.log(sublime)
+
   },
+
   beforeUpdate() {
     this.combineWallets();
+
   },
   methods: {
     combineWallets() {
@@ -62,6 +67,7 @@ export default {
         item.image = image.image;
         item.rate = exchange.rate;
         this.userWallet = this.Wallet;
+
       });
     }
   }
