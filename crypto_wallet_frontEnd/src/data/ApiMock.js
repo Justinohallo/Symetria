@@ -22,7 +22,7 @@ function GetWallets() {
     setTimeout(function() {
       if (Math.random() < 0.2) {
         reject("Could not connect to server");
-        return "Sorry";
+        return;
       }
 
       resolve([
@@ -35,42 +35,33 @@ function GetWallets() {
   });
 }
 
-const images = require.context("./images", true, /\.svg$/);
 
-let userWallets = [
+
+const images = require.context("./images", true, /\.svg$/);
+const imageArray = [
   {
     currency: "BTC",
-    amount: 0.5001,
-    changeToday: 1000.77,
-    image: images("./btc.svg"),
-    rate: 10100
+    image: images("./btc.svg")
   },
   {
     currency: "ETH",
-    amount: 1.2211,
-    changeToday: -213.4,
-    image: images("./eth.svg"),
-    rate: 500.12717
+    image: images("./eth.svg")
   },
   {
     currency: "LTC",
-    amount: 105.3177,
-    changeToday: 0,
-    image: images("./ltc.svg"),
-    rate: 60
+    image: images("./ltc.svg")
   },
   {
     currency: "XMR",
-    amount: 1,
-    changeToday: 0.48,
-    image: images("./xmr.svg"),
-    rate: 320.45
+    image: images("./xmr.svg")
   }
 ];
+
 
 export default {
   Wallet,
   ExchangeRate,
   ExchangeRatesToCAD,
-  userWallets
+  GetWallets,
+  imageArray
 };

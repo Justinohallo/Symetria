@@ -1,7 +1,7 @@
 <template>
-    <div class='totalWallet' >
+    <div v-if="this.Wallet.length > 1" class='totalWallet' >
         <ul>
-      <li v-for="wallet in walletArray" >
+      <li v-for="wallet in userWallet" >
           <div class="wallet">
       <div class="wallet__section--left">
         <img  alt=""/>
@@ -20,8 +20,10 @@
       </div>
     </div>
       </li>
-    </ul>  
+    </ul>   
+  
     </div>
+    
 </template>
 <script>
 import API from "../data/ApiMock.js";
@@ -29,12 +31,39 @@ import API from "../data/ApiMock.js";
 export default {
   data() {
     return {
-      ExchangeRatesToCAD: this.$store.state.ExchangeRatesToCAD,
-      ExchangeRate: this.$store.state.ExchangeRate,
-      Wallet: this.$store.state.Wallet,
-      test: this.$store.state.ExchangeRatesToCAD,
-      walletArray: API.userWallets
+      ExchangeRatesToCAD: API.ExchangeRatesToCAD,
+      //   ExchangeRate: this.$store.state.ExchangeRate,
+      //   Wallet: this.$store.state.Wallet,
+      //   walletArray: API.userWallets,
+      //   GetWalletsFunction: API.GetWalletsFunction,
+      GetWallets: API.GetWallets,
+      Wallet: [],
+      images: API.imageArray,
+      userWallet: []
     };
+  },
+  beforeMount() {
+    this.GetWallets().then(data => {
+      this.Wallet = this.Wallet.concat(data);
+    });
+  },
+  beforeUpdate() {
+    this.combineWallets();
+  },
+  methods: {
+    combineWallets() {
+      this.Wallet.forEach(item => {
+        const image = this.images.find(image => {
+          return image.currency === item.currency;
+        });
+        const exchange = this.ExchangeRatesToCAD.find(exchange => {
+          return exchange.currency === item.currency;
+        });
+        item.image = image.image;
+        item.rate = exchange.rate;
+        this.userWallet = this.Wallet;
+      });
+    }
   }
 };
 </script>

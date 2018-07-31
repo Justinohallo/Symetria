@@ -25,7 +25,6 @@ export default {
   props: {
     msg: String
   },
-
   beforeMount() {
     this.render = true;
   },
@@ -37,7 +36,7 @@ export default {
       Wallet: this.$store.state.Wallet,
       gain: "▲",
       loss: 9660,
-      walletStatus: false,
+      walletStatus: true,
       render: false,
       walletArray: API.userWallets,
       imageArray: [],
@@ -51,44 +50,10 @@ export default {
     }
   },
   methods: {
-    combineWallets() {
-      Wallet.forEach(item => {
-        const image = images.find(image => {
-          return image.currency === item.currency;
-        });
-        const exchange = exchangeRates.find(exchange => {
-          return exchange.currency === item.currency;
-        });
-        item.image = image.img;
-        item.rate = exchange.exchangeRate;
-      });
-    },
     displayWallet() {
       this.walletStatus = !this.walletStatus;
       this.$store.commit("walletData", this.ExchangeRatesToCAD);
     },
-    GetWallets1() {
-      this.Wallet = this.Wallet;
-      let Wallet = this.Wallet;
-      return new Promise(function(resolve, reject) {
-        setTimeout(function() {
-          if (Math.random() < 0.2) {
-            reject("Could not connect to server");
-            return;
-          }
-
-          resolve([
-            new Wallet("BTC", 0.5001, 1000.77),
-            new Wallet("ETH", 1.2211, -213.4),
-            new Wallet("LTC", 105.3177, 0),
-            new Wallet("XMR", 1, 0.48)
-          ]);
-        }, 250);
-      }).then(data => {
-        this.$store.commit("walletData", data);
-        return (this.walletArray = data);
-      });
-    }
   }
 };
 </script>
