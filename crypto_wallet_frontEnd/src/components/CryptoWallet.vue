@@ -1,64 +1,259 @@
 <template>
 
-  <div v-if="ExchangeRatesToCAD" class="container">
+  <div class="container">
   <div class="heading">
-      <h1 class="heading__title"> Your Portfolio </h1>
+   <span><img class="portfolio__icon" src="../data/images/symetria.png"/></span> 
+      <h1 class="heading__title">  Your Portfolio</h1>
+      
+    <button v-if='!this.viewPortfolio' class="displayPortfolio" @click='displayPortfolio()'> View Portfolio  </button>
+      <!-- <button v-else-if='this.userWallet.length === 0' class="displayPortfolio" @click='generateWallet(), combineWalletData(),  calculatePortfolioValue(),  displayPortfolio()' > Reload Portfolio  </button> -->
+      <button v-else-if='this.serverFailure && this.viewPortfolio' class="displayPortfolio" @click='generateWallet(), combineWalletData(),  calculatePortfolioValue(),  displayPortfolio()' > Reload Portfolio  </button>
+        <button v-else class="displayPortfolio" @click='hidePortfolio()'> Hide Portfolio  </button>
+
+
     </div>
-    <div class="portfolio">
-      <h2 class="portfolio__title" >PORTFOLIO VALUE</h2>
-      <h1 class="portfolio__value">C$19,500.31</h1>
+    
+
+ <transition name="bounce">
+    <div v-if='this.viewPortfolio' class="portfolio">
+     <PortfolioSummary
+     :portfolioValue="this.portfolioValue"
+     />
+    <div v-if="this.serverFailure && this.viewPortfolio" >Sorry, something went wrong. Please reload portfolio. </div>
+      
+       <div v-else>
+         
+       <h2 class="portfolio__title" >PORTFOLIO VALUE</h2>
+      <h1 class="portfolio__value">{{portfolioValue.toLocaleString('en',{style: 'currency', currency: 'CAD'})}}</h1>
       <p class="portfolio__change">&#9650; +$8,700.86</p>
-      <button v-show="render" class="displayPortfolio" @click='displayWallet(); GetWallets1()'> View Portfolio  </button>
-      <button v-show="render" class="displayPortfolio" @click='displayWallet(); GetWallets1()'> Hide Portfolio  </button>
+       
+      <button v-if="!this.viewWallets" class="displayPortfolio" @click='displayWallets();'> View Wallets  </button>
+      <button v-else  class="displayPortfolio" @click='hideWallets();'> Hide Wallets  </button> 
+   
     </div>
-   <Wallets v-show='walletStatus'/> 
+ 
+      <transition name="slide-fade">
+    <Wallets 
+   v-show='viewWallets && viewPortfolio'
+   :userWalletTest="this.userWallet" 
+   /> 
+  </transition>
+  
+  
+
+   </div>
+</transition> 
+
   </div>
 </template>
 
 <script>
 import Wallets from "./Wallets.vue";
+import PortfolioSummary from "./PortfolioSummary.vue";
 import API from "../data/ApiMock.js";
 
 export default {
   name: "CryptoWallet",
-  components: { Wallets },
+  components: { Wallets, PortfolioSummary },
   props: {
     msg: String
   },
-  beforeMount() {
-    this.render = true;
-  },
-
   data() {
     return {
-      ExchangeRatesToCAD: this.$store.state.ExchangeRatesToCAD,
-      ExchangeRate: this.$store.state.ExchangeRate,
-      Wallet: this.$store.state.Wallet,
-      gain: "▲",
-      loss: 9660,
-      walletStatus: true,
+      // Wallet: this.$store.state.Wallet,
+      walletStatus: false,
       render: false,
       walletArray: API.userWallets,
       imageArray: [],
       userWallets: [],
-      items: []
+      items: [],
+      ExchangeRatesToCAD: API.ExchangeRatesToCAD,
+      GetWallets: API.GetWallets,
+      Wallet: [],
+      images: API.imageArray,
+      userWallet: [],
+      serverFailure: "",
+      portfolioValue: 0,
+      portfolioValueTest: 0,
+      viewPortfolio: false,
+      viewWallets: false,
+      phase1: this.generateWallet,
+      userWalletTest: []
     };
   },
-  computed: {
-    cart() {
-      return this.$store.state.Wallet;
-    }
+
+  beforeMount() {
+    this.render = true;
+    this.GetWallets()
+      .then(data => {
+        this.Wallet = this.Wallet.concat(data);
+        this.serverFailure = false;
+        console.log("mount Generate");
+        console.log(this.serverFailure);
+      })
+      .catch(e => {
+        this.serverFailure = true;
+        console.log(this.serverFailure);
+        console.log(e);
+      });
   },
+  beforeUpdate() {
+    this.combineWalletData();
+    this.calculatePortfolioValue();
+  },
+  computed: {},
   methods: {
-    displayWallet() {
-      this.walletStatus = !this.walletStatus;
-      
+    //      generateNewWallet() {
+    //   return new Promise(function(resolve, reject) {
+    //     this.generateWallet(){
+    //       resolve(
+    //       console.log('generateWalletPromise')
+    //       )
+    //     }
+    //   });
+    // },
+    displayPortfolio() {
+      this.viewPortfolio = true;
+      this.viewWallets = false;
     },
+    hidePortfolio() {
+      this.viewPortfolio = false;
+    },
+    displayWallets() {
+      this.viewWallets = true;
+    },
+    hideWallets() {
+      this.viewWallets = false;
+    },
+    generateWallet() {
+      this.GetWallets()
+        .then(data => {
+          this.Wallet = this.Wallet.concat(data);
+          this.serverFailure = false;
+          console.log("click Generate");
+          console.log(this.serverFailure);
+        })
+        .catch(e => {
+          console.log(e);
+          this.serverFailure = true;
+          console.log(this.serverFailure);
+        });
+    },
+
+    combineWalletData() {
+      this.Wallet.forEach(item => {
+        const index = this.Wallet.indexOf(item);
+        const image = this.images.find(image => {
+          return image.currency === item.currency;
+        });
+        const exchange = this.ExchangeRatesToCAD.find(exchange => {
+          return exchange.currency === item.currency;
+        });
+
+        const CADValue = this.Wallet.map(({ amount, rate }) => amount * rate);
+
+        item.image = image.image;
+        item.rate = exchange.rate;
+        item.CADValue = CADValue[index];
+        this.userWallet = this.Wallet;
+      });
+    },
+    calculatePortfolioValue() {
+      let valueArray = [];
+      this.userWallet.forEach(item => {
+        valueArray.push(item.CADValue);
+      });
+
+      let portfolioValue = valueArray.reduce((a, b) => a + b, 0);
+
+      this.portfolioValue = portfolioValue;
+    },
+    generateNewWallet() {
+      return new Promise(function(resolve, reject) {
+        generateWallet(function() {
+          resolve(console.log("generateWalletPromise"));
+        });
+      });
+    },
+
+    promiseWallet() {
+      this.GetWallets()
+        .then(data => {
+          console.log("promiseGenerate");
+          return data;
+        })
+        .catch(e => {
+          console.log(e);
+        })
+        .then(data => {
+          console.log("promise #2");
+          console.log("promise #2 start" + data);
+          data.forEach(item => {
+            const index = data.indexOf(item);
+            const image = this.images.find(image => {
+              return image.currency === item.currency;
+            });
+            const exchange = this.ExchangeRatesToCAD.find(exchange => {
+              return exchange.currency === item.currency;
+            });
+
+            const CADValue = data.map(({ amount, rate }) => amount * rate);
+
+            item.image = image.image;
+            item.rate = exchange.rate;
+            item.CADValue = CADValue[index];
+            this.userWalletTest = data;
+            return data;
+          });
+          console.log("promise #2 end" + data);
+        })
+        .then(data => {
+          console.log("promise #3 Start");
+          let valueArray = [];
+          this.userWallet.forEach(item => {
+            valueArray.push(item.CADValue);
+          });
+
+          let portfolioValue = valueArray.reduce((a, b) => a + b, 0);
+
+          this.portfolioValueTest = portfolioValue;
+          console.log("promise #3 end");
+        });
+    },
+
+    combineWalletData() {
+      this.Wallet.forEach(item => {
+        const index = this.Wallet.indexOf(item);
+        const image = this.images.find(image => {
+          return image.currency === item.currency;
+        });
+        const exchange = this.ExchangeRatesToCAD.find(exchange => {
+          return exchange.currency === item.currency;
+        });
+
+        const CADValue = this.Wallet.map(({ amount, rate }) => amount * rate);
+
+        item.image = image.image;
+        item.rate = exchange.rate;
+        item.CADValue = CADValue[index];
+        this.userWallet = this.Wallet;
+      });
+    },
+
+    calculatePortfolioValue() {
+      let valueArray = [];
+      this.userWallet.forEach(item => {
+        valueArray.push(item.CADValue);
+      });
+
+      let portfolioValue = valueArray.reduce((a, b) => a + b, 0);
+
+      this.portfolioValue = portfolioValue;
+    }
   }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
 // Color
 $dark-grey: #333;
@@ -101,6 +296,8 @@ $desktop-breakpoint: 45rem;
   border-top-left-radius: 3px;
   border-top-right-radius: 3px;
   border-top: 10px solid $color-heading-border-top;
+  flex-wrap: wrap;
+  display: flex;
 }
 
 .heading__title {
@@ -114,6 +311,12 @@ $desktop-breakpoint: 45rem;
   box-shadow: 0 4px 8px #aaa;
   margin-bottom: $l-size;
   text-align: center;
+}
+.portfolio__icon {
+  width: $l-size;
+  height: $l-size;
+  margin-top: $s-size;
+  margin-left: $s-size;
 }
 
 .portfolio__title {
@@ -204,6 +407,7 @@ $desktop-breakpoint: 45rem;
   vertical-align: top;
   color: #fff;
   cursor: pointer;
+  margin-left: auto;
 }
 
 ul {
@@ -211,4 +415,37 @@ ul {
   padding: 0;
   margin: 0;
 }
+
+.slide-fade-enter-active {
+  transition: all .3s ease;
+}
+.slide-fade-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-fade-enter, .slide-fade-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.bounce-enter-active {
+  animation: bounce-in .5s;
+}
+.bounce-leave-active {
+  animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+  0% {
+    transform: scale(0);
+  }
+  50% {
+    transform: scale(1.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
 </style>
+
+

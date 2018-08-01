@@ -20,7 +20,7 @@ var ExchangeRatesToCAD = [
 function GetWallets() {
   return new Promise(function(resolve, reject) {
     setTimeout(function() {
-      if (Math.random() < 0.8) {
+      if (Math.random() < 0.5) {
         reject("Could not connect to server");
         return;
       }

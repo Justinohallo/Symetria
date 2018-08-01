@@ -1,49 +1,25 @@
 <template>
-    <div v-if="this.userWalletTest.length > 1" class='totalWallet' >
-        <ul>
-      <li v-for="wallet in userWalletTest" >
-          <div class="wallet">
-      <div class="wallet__section--left">
-         <img class="wallet__icon" :src='wallet.image' alt="">
-      </div>
-      <div class="wallet__section--middle">
-        <p class="wallet__cryptoAsset">{{wallet.currency}}</p>
-        <p class="wallet__value--cryptoAsset">{{wallet.amount.toLocaleString('en')}} {{wallet.currency}}
-          <span class="crypto__price--cad">/ {{wallet.rate.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</span>
-        </p>
-      </div>
-      <div class="wallet__section--right">
-        <p  class='wallet__value--increase' :class="{'wallet__value--same': wallet.changeToday === 0 , 'wallet__value--decrease': wallet.changeToday < 0  }">  
-
-        
-        <span v-if="wallet.changeToday > 0"> ▲ </span> 
-        <span v-else-if="wallet.changeToday < 0"> ▼</span>
-        <span v-else>  </span>
-        {{wallet.changeToday.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</p>
-        <p class="wallet__value--cad"> {{wallet.currency}} Value: {{wallet.CADValue.toLocaleString('en', {style: 'currency', currency: 'CAD'})}}</p>
-      </div>
-    </div>
-      </li>
-    </ul>   
-
-    
+ <div>
+    <div v-if="this.serverFailure && this.viewPortfolio" >Sorry, something went wrong. Please reload portfolio. </div>
+      
+       <div v-else>
+      
+      
+         
+       <h2 class="portfolio__title" >PORTFOLIO VALUE</h2>
+      <h1 class="portfolio__value">{{this.portfolioValue.toLocaleString('en',{style: 'currency', currency: 'CAD'})}}</h1>
+      <p class="portfolio__change">&#9650; +$8,700.86</p>
+  </div>
     </div>
     
 </template>
 <script>
-import API from "../data/ApiMock.js";
+
 
 export default {
-    props: ['userWalletTest'], 
+    props: ['portfolioValue'], 
   data() {
     return {
-      ExchangeRatesToCAD: API.ExchangeRatesToCAD,
-      GetWallets: API.GetWallets,
-      Wallet: [],
-      images: API.imageArray,
-      userWallet: [],
-        gain: "▲",
-      loss: 0,
     };
   },
 
@@ -159,5 +135,23 @@ ul {
   list-style-type: none;
   padding: 0;
   margin: 0;
+}
+.portfolio__title {
+  color: grey;
+  font-size: $font-size-large;
+  margin: 0;
+  margin-top: $l-size;
+}
+
+.portfolio__value {
+  font-size: $font-size-enourmous;
+  margin: $xs-size;
+}
+
+.portfolio__change {
+  color: $color-increase;
+  margin: 0;
+  margin-bottom: $l-size;
+  font-size: $font-size-large;
 }
 </style>

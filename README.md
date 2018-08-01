@@ -96,3 +96,11 @@ Styling and CSS Issues:
 
 I need to use the class binding based on the values in the Wallet Array to dynamically render currency change data. If the value in Wallets.changeToday is positive, then I need to render a positive arrow and have the number value be represented in green. If the number is negative, I need to render a negative arrow and have the number represented in red. 
 
+Wednesday July August 1st. 
+
+Problems from Monday have been solved. 
+
+New issue currently exists when attempting to load the wallet data via a click button. 
+
+The data is being called from the server, with the getWallets function generating 
+
